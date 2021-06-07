@@ -1,21 +1,15 @@
 {
-  "allUsers": {
-    "returnType": "string"
-  },
-  "getJSON": {
-    "returnType": "string"
-  },
-  "sayHello": {
-    "returnType": "string",
-    "inputVariables": {
-      "name": "string"
-    }
-  },
   "helloWorld": {
     "returnType": "string",
     "inputVariables": {
       "message": "string",
       "name": "string"
+    }
+  },
+  "massDelete": {
+    "returnType": "string",
+    "inputVariables": {
+      "model": "string"
     }
   }
 }
