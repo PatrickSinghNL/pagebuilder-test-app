@@ -10,5 +10,12 @@
     "inputVariables": {
       "name": "string"
     }
+  },
+  "helloWorld": {
+    "returnType": "string",
+    "inputVariables": {
+      "message": "string",
+      "name": "string"
+    }
   }
 }
