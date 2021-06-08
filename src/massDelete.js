@@ -1,23 +1,33 @@
 async function massDelete() {
     const modelName = await context("model");
-    const getQueryName = "all" + modelName;
-    const deleteQueryName = "deleteMany" + modelName;
+    let take = 200;
+    let skip = 0;
 
-    const getImportIds = `{ ${[getQueryName]}(take: 200, skip: 0){ totalCount results{ id }}}`
-    const resultImportIds = await gql(getImportIds);
-    console.log(resultImportIds.allImport.totalCount);
+    const totalQuery = `{ ${["all" + modelName ]}{ totalCount }}`
+    const totalRecords = await gql(totalQuery);
+    let loopTimes = Math.ceil(totalRecords.allImport.totalCount / take);
+    let idsToDelete = [];
+    
+    for (let i = 0; i < loopTimes; i++) { 
+        const getImportIds = `{ ${["all" + modelName ]}(take: ${take}, skip: ${skip}){ results{ id }}}`
+        const resultImportIds = await gql(getImportIds);
 
-    if (resultImportIds.allImport.results.length > 0) {
-        const idsToDelete = resultImportIds.allImport.results.map(a => a.id);
+        resultImportIds.allImport.results.forEach(obj => {
+            idsToDelete.push(obj.id);
+        });
+        skip = skip + take;
+    }
+    
+    if (idsToDelete.length > 0) {
         let deleteImport = `
             mutation {
-                ${[deleteQueryName]}(input: $input) {
+                ${["deleteMany" + modelName]}(input: $input) {
                     id
                 }
             }
         `;
-        return await gql(deleteImport, { input: { ids: idsToDelete } });
-    }
+        await gql(deleteImport, { input: { ids: idsToDelete } });
+    } 
 }
 
 export default massDelete;

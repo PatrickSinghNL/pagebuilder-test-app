@@ -1,11 +1,4 @@
 {
-  "helloWorld": {
-    "returnType": "string",
-    "inputVariables": {
-      "message": "string",
-      "name": "string"
-    }
-  },
   "massDelete": {
     "returnType": "string",
     "inputVariables": {
